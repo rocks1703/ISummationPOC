@@ -46,17 +46,19 @@ namespace ISummationPOC.Controllers
 
         //CreateUser
         [HttpPost]
-        public async Task<IActionResult> CreateUser(User user,  IFormFile image)
+        public async Task<IActionResult> CreateUser(CreateUserRequest request,  IFormFile image)
         {
             var userTypes = _context.userTypes.Select(ut => new { ut.Id, ut.UserType }).ToList();
             ViewBag.UserTypes = new SelectList(userTypes, "Id", "UserType");
 
             if (ModelState.IsValid)
             {
-                await UserService.CreateUserAsync(user, image);
+                await UserService.CreateUserAsync(request.User, image);
                 return RedirectToAction("GetUsers");
             }
-            return RedirectToAction("CreateUser");
+
+            // return RedirectToAction("CreateUser");
+            return View(request);
         }
 
         [HttpPost]

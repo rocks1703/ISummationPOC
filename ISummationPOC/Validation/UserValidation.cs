@@ -10,16 +10,17 @@ namespace ISummationPOC.Validation
 
         public CreateUserValidation( ISummationDbContext dbContext)
         {
-            _context = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            //_context = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
-            RuleFor(request => request.user).NotNull().WithMessage("User object cannot be null.");
+            _context = dbContext;
+            RuleFor(request => request.User).NotNull().WithMessage("User object cannot be null.");
 
-            RuleFor(request => request.user.FirstName).NotEmpty().NotNull().WithMessage("First Name is required.");
-            RuleFor(request => request.user.LastName).NotEmpty().NotNull().WithMessage("Last Name is required.");
-            RuleFor(request => request.user.Email).NotEmpty().NotNull().WithMessage("Email is required.")
+            RuleFor(request => request.User.FirstName).NotEmpty().NotNull().WithMessage("First Name is required.");
+            RuleFor(request => request.User.LastName).NotEmpty().NotNull().WithMessage("Last Name is required.");
+            RuleFor(request => request.User.Email).NotEmpty().NotNull().WithMessage("Email is required.")
                .Must(BeUniqueEmail).WithMessage("Email already exists in our records.");
 
-            RuleFor(request => request.user.Mobile).NotEmpty().NotNull().WithMessage("Mobile Number is required.")
+            RuleFor(request => request.User.Mobile).NotEmpty().NotNull().WithMessage("Mobile Number is required.")
                 .Must(BeuniqueMobile).WithMessage("Mobile Number already exists in our records.")
                 .Matches(@"^\+?[1-9]{1}[0-9\s\(\)\-]{6,14}$").WithMessage("Mobile number must be a valid format and not exceed 15 characters.");
 

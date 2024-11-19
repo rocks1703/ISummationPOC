@@ -5,7 +5,7 @@ namespace ISummationPOC.Request
 {
     public class CreateUserRequest : IRequest<User>
     {
-        public User user { get; set; }
+        public User User { get; set; }
 
     }
 

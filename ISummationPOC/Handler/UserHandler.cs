@@ -33,8 +33,8 @@ namespace ISummationPOC.Handler
         {
             try
             {
-                await _usersService.AddAsync(request.user);
-                return request.user;
+                await _usersService.AddAsync(request.User);
+                return request.User;
             }
             catch
             {
