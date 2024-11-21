@@ -35,7 +35,7 @@ namespace ISummationPOC.Service
         {
             if (ProfileImage != null)
             {
-                var validImageTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp" };
+               
                 string imageName = ProfileImage.FileName;
 
 
@@ -61,7 +61,7 @@ namespace ISummationPOC.Service
 
             if (ProfileImage != null)
             {
-                var validImageTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp" };
+                //var validImageTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp" };
 
 
                 string imageName = ProfileImage.FileName;
