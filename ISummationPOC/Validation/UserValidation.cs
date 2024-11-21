@@ -21,9 +21,11 @@ namespace ISummationPOC.Validation
             RuleFor(request => request.User.Email).NotEmpty().NotNull().WithMessage("Email is required.").EmailAddress().WithMessage("Please Provide a Valid Email-Address")
                .Must(BeUniqueEmail).WithMessage("Email already exists in our records.");
 
-            RuleFor(request => request.User.Mobile).NotEmpty().NotNull().WithMessage("Mobile Number is required.")
-                .Must(BeuniqueMobile).WithMessage("Mobile Number already exists in our records.")
-                .Matches(@"^\+?[1-9]{1}[0-9\s\(\)\-]{6,14}$").WithMessage("Mobile number must be a valid format and not exceed 15 characters.");
+            RuleFor(request => request.User.Mobile).NotEmpty().NotNull().WithMessage("Mobile Number is required.").Must(BeuniqueMobile)
+                .WithMessage("Mobile Number already exists in our records.")
+                .Matches(@"^\+?(1[-.\s]?)?(\([2-9]\d{2}\)|[2-9]\d{2})[-.\s]?\d{3}[-.\s]?\d{4}$|^\+?91[6-9]\d{9}$")
+                .WithMessage("Mobile number must be in a valid format.");
+
         }
         private bool BeUniqueEmail(string email)
         {
@@ -55,10 +57,10 @@ namespace ISummationPOC.Validation
                 .Must((request, email) => BeUniqueEmail(email, request.User.Id))
                 .WithMessage("Email already exists in our records.");
 
-            RuleFor(request => request.User.Mobile).NotEmpty().NotNull().WithMessage("Mobile Number is required.").Must((request, mobile) => BeuniqueMobile(mobile, request.User.Id ))
-             .WithMessage("Mobile Number already exists in our records.")
-             .Matches(@"^\+?[1-9]{1}[0-9\s\(\)\-]{6,14}$")
-             .WithMessage("Mobile number must be a valid format and in between  10 - 15 characters.");
+            RuleFor(request => request.User.Mobile).NotEmpty().NotNull().WithMessage("Mobile Number is required.").Must((request, mobile) 
+                => BeuniqueMobile(mobile, request.User.Id ))
+              .Matches(@"^\+?(1[-.\s]?)?(\([2-9]\d{2}\)|[2-9]\d{2})[-.\s]?\d{3}[-.\s]?\d{4}$|^\+?91[6-9]\d{9}$")
+              .WithMessage("Mobile number must be in a valid format.");
 
         }
         private bool BeUniqueEmail(string email, int currentUserId)
