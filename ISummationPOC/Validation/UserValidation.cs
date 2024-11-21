@@ -1,7 +1,8 @@
 ﻿using FluentValidation;
 using ISummationPOC.DBContext;
+using ISummationPOC.Entity;
 using ISummationPOC.Request;
-
+using System.Reflection;
 namespace ISummationPOC.Validation
 {
     public class CreateUserValidation : AbstractValidator<CreateUserRequest>
@@ -17,22 +18,19 @@ namespace ISummationPOC.Validation
 
             RuleFor(request => request.User.FirstName).NotEmpty().NotNull().WithMessage("First Name is required.");
             RuleFor(request => request.User.LastName).NotEmpty().NotNull().WithMessage("Last Name is required.");
-            RuleFor(request => request.User.Email).NotEmpty().NotNull().WithMessage("Email is required.")
+            RuleFor(request => request.User.Email).NotEmpty().NotNull().WithMessage("Email is required.").EmailAddress().WithMessage("Please Provide a Valid Email-Address")
                .Must(BeUniqueEmail).WithMessage("Email already exists in our records.");
 
             RuleFor(request => request.User.Mobile).NotEmpty().NotNull().WithMessage("Mobile Number is required.")
                 .Must(BeuniqueMobile).WithMessage("Mobile Number already exists in our records.")
                 .Matches(@"^\+?[1-9]{1}[0-9\s\(\)\-]{6,14}$").WithMessage("Mobile number must be a valid format and not exceed 15 characters.");
-
         }
-
         private bool BeUniqueEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
                 return false;
             return !_context.users.Any(c => c.Email == email);
         }
-
         private bool BeuniqueMobile(string mobile)
         {
             if (string.IsNullOrWhiteSpace(mobile))
@@ -41,4 +39,40 @@ namespace ISummationPOC.Validation
         }
 
     }
+    public class UpdateUserValidation : AbstractValidator<UpdateUserRequest>
+    {
+        private readonly ISummationDbContext _context;
+        public UpdateUserValidation(ISummationDbContext dbContext)
+        {
+            _context = dbContext;
+
+            _context = dbContext;
+            RuleFor(request => request.User).NotNull().WithMessage("User object cannot be null.");
+
+            RuleFor(request => request.User.FirstName).NotEmpty().NotNull().WithMessage("First Name is required.");
+            RuleFor(request => request.User.LastName).NotEmpty().NotNull().WithMessage("Last Name is required.");
+            RuleFor(request => request.User.Email).NotEmpty().NotNull().WithMessage("Email is required.").EmailAddress().WithMessage("Please Provide a Valid Email-Address")
+                .Must((request, email) => BeUniqueEmail(email, request.User.Id))
+                .WithMessage("Email already exists in our records.");
+
+            RuleFor(request => request.User.Mobile).NotEmpty().NotNull().WithMessage("Mobile Number is required.").Must((request, mobile) => BeuniqueMobile(mobile, request.User.Id ))
+             .WithMessage("Mobile Number already exists in our records.")
+             .Matches(@"^\+?[1-9]{1}[0-9\s\(\)\-]{6,14}$")
+             .WithMessage("Mobile number must be a valid format and in between  10 - 15 characters.");
+
+        }
+        private bool BeUniqueEmail(string email, int currentUserId)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;          
+            return !_context.users.Any(c => c.Email == email && c.Id != currentUserId);
+        }
+        private bool BeuniqueMobile(string mobile, int currentUserId)
+        {
+            if (string.IsNullOrWhiteSpace(mobile))
+                return false;
+            return !_context.users.Any(c => c.Mobile == mobile && c.Id != currentUserId);
+        }
+    }
+
 }

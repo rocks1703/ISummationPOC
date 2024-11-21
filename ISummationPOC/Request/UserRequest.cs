@@ -11,7 +11,7 @@ namespace ISummationPOC.Request
 
     public class UpdateUserRequest : IRequest<User> 
     {
-        public User user { get; set; }
+        public User User { get; set; }
     }
 
     public class GetUserByIdRequest : IRequest<User>

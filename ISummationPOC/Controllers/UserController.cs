@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ISummationPOC.Controllers
@@ -49,29 +50,19 @@ namespace ISummationPOC.Controllers
         public async Task<IActionResult> CreateUser(CreateUserRequest request,  IFormFile image)
         {
             var userTypes = _context.userTypes.Select(ut => new { ut.Id, ut.UserType }).ToList();
-            ViewBag.UserTypes = new SelectList(userTypes, "Id", "UserType");
+            ViewBag.UserTypes = new SelectList(userTypes, "Id", "UserType");               
+            ModelState.AddModelError("ProfileImage", "Only image files (JPEG, PNG, GIF, BMP, WebP) are allowed.");                
+            
 
             if (ModelState.IsValid)
             {
                 await UserService.CreateUserAsync(request.User, image);
+
+                TempData["SuccessMessage"] = "User created successfully.";
                 return RedirectToAction("GetUsers");
             }
-
-            // return RedirectToAction("CreateUser");
+           
             return View(request);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateUser(User user, IFormFile image)
-        {
-            var userTypes = _context.userTypes.Select(ut => new { ut.Id, ut.UserType }).ToList();
-            ViewBag.UserTypes = new SelectList(userTypes, "Id", "UserType");
-            if (ModelState.IsValid)
-            {
-                await UserService.UpdateUser(user, image);
-                return RedirectToAction("GetUsers");
-            }
-            return RedirectToAction("UpdateUser");
         }
 
 
@@ -80,27 +71,49 @@ namespace ISummationPOC.Controllers
         {          
 
             var userTypes = _context.userTypes.Select(ut => new { ut.Id, ut.UserType }).ToList();
-            ViewBag.UserTypes = new SelectList(userTypes, "Id", "UserType");
-
+            ViewBag.UserTypes = new SelectList(userTypes, "Id", "UserType");          
             return View("CreateUser");
         }
 
+        //UpdateUser
         [HttpGet]
         public async Task<IActionResult> UpdateUser(int id)
-        {
+        {           
+
             var user = await _context.users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
             var userTypes = _context.userTypes.Select(ut => new { ut.Id, ut.UserType }).ToList();
-            ViewBag.UserTypes = new SelectList(userTypes, "Id", "UserType");
+            ViewBag.UserTypes = new SelectList(userTypes, "Id", "UserType");            
+            UpdateUserRequest userData = new UpdateUserRequest
+            {
+                User = user 
+            };
 
-            return View("UpdateUser", user);
+            return View("UpdateUser", userData);
         }
 
 
-      
+        [HttpPost]
+        public async Task<IActionResult> UpdateUser(UpdateUserRequest request, IFormFile image)
+        {
+            var userTypes = _context.userTypes.Select(ut => new { ut.Id, ut.UserType }).ToList();
+            ViewBag.UserTypes = new SelectList(userTypes, "Id", "UserType");
+            ModelState.AddModelError("ProfileImage", "Only image files (JPEG, PNG, GIF, BMP, WebP) are allowed.");
+
+            if (ModelState.IsValid)
+            {
+                await UserService.UpdateUser(request.User, image);
+                return RedirectToAction("GetUsers");
+            }
+
+
+            return View(request);
+        }
+
+
         [HttpPost("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -109,7 +122,7 @@ namespace ISummationPOC.Controllers
             var user = await UserService.DeleteUserAsync(id);
             if (user > 0) 
             {
-                TempData["SuccessMessage"] = "User deleted successfully.";
+                TempData["SuccessDeleteMessage"] = "User deleted successfully.";
             }
             if (user == null) return NotFound();
             return RedirectToAction("GetUsers", User);

@@ -13,6 +13,7 @@ using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserValidation>());
+builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateUserValidation>());
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -23,6 +24,8 @@ builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 builder.Services.AddScoped<FileUploadHandler>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddValidatorsFromAssemblyContaining<CreateUserValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateUserValidation>();
+
 
 
 

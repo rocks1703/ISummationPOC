@@ -6,17 +6,12 @@ namespace ISummationPOC.Entity
     [Table("mst_user")]
     public class User
     {
-
         [Key]
         [Column("id")]
         public int Id { get; set; }
 
         [Column("usertypeid")]
-        public int UserTypeId { get; set; }
-
-
-        //[Column("usertype")]
-        //public string UserType { get; set; }
+        public int UserTypeId { get; set; }       
 
         [Column("firstname")]
 
@@ -33,7 +28,6 @@ namespace ISummationPOC.Entity
 
         [Column("profileimage")]
         public string ? ProfileImage { get; set; }
-
-        
+ 
     }
 }
