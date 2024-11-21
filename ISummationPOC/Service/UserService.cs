@@ -12,14 +12,14 @@ namespace ISummationPOC.Service
 {
     public class UserService : Repository<User>, IUserService
     {
-        
+
         private readonly ISummationDbContext _context;
 
         private readonly BlobContainerClient _blobContainerClient;
         private readonly IFileUploadService _fileUploadService;
         private readonly IMediator _mediator;
 
-        public UserService(ISummationDbContext context, IConfiguration configuration, IFileUploadService fileUploadService , IMediator mediator) : base(context)
+        public UserService(ISummationDbContext context, IConfiguration configuration, IFileUploadService fileUploadService, IMediator mediator) : base(context)
         {
             _context = context;
             var connectionString = configuration.GetValue<string>("AzureBlobStorage:ConnectionString");
@@ -35,6 +35,7 @@ namespace ISummationPOC.Service
         {
             if (ProfileImage != null)
             {
+                var validImageTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp" };
                 string imageName = ProfileImage.FileName;
 
 
@@ -54,12 +55,15 @@ namespace ISummationPOC.Service
 
 
 
-        public async Task<User>CreateUserAsync(User user, IFormFile ProfileImage)
+        public async Task<User> CreateUserAsync(User user, IFormFile ProfileImage)
         {
-           
+
 
             if (ProfileImage != null)
             {
+                var validImageTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp" };
+
+
                 string imageName = ProfileImage.FileName;
 
 
@@ -80,26 +84,26 @@ namespace ISummationPOC.Service
         //UserList
         public async Task<IEnumerable<UserViewModel>> GetAllUserAsync()
         {
-           
-            var usrlst = (from c in _context.users                              
-                               select new UserViewModel
-                               {
-                                   Id = c.Id,
-                                   FirstName = c.FirstName,
-                                   LastName = c.LastName,
-                                   Email = c.Email,
-                                   //UserTypeId = c.UserTypeId,
-                                   UserType = _context.userTypes.Where(f => f.Id == c.UserTypeId).Select(f => f.UserType).FirstOrDefault(),
+
+            var usrlst = (from c in _context.users
+                          select new UserViewModel
+                          {
+                              Id = c.Id,
+                              FirstName = c.FirstName,
+                              LastName = c.LastName,
+                              Email = c.Email,
+                              //UserTypeId = c.UserTypeId,
+                              UserType = _context.userTypes.Where(f => f.Id == c.UserTypeId).Select(f => f.UserType).FirstOrDefault(),
 
 
-                                   Mobile = c.Mobile,                                
-                                   ProfileImage = "http://127.0.0.1:10000/devstoreaccount1/userprofile/" + c.ProfileImage
-                               }
+                              Mobile = c.Mobile,
+                              ProfileImage = "http://127.0.0.1:10000/devstoreaccount1/userprofile/" + c.ProfileImage
+                          }
     );
             return await usrlst.ToListAsync();
         }
 
-       
+
 
         //DeleteUser
         public async Task<int> DeleteUserAsync(int id)
@@ -112,7 +116,7 @@ namespace ISummationPOC.Service
 
             _context.users.Remove(user);
             return await _context.SaveChangesAsync();
-            
+
         }
 
         //GetUserById       
@@ -122,6 +126,6 @@ namespace ISummationPOC.Service
             return await _context.users.FirstOrDefaultAsync();
         }
 
-        
+
     }
 }

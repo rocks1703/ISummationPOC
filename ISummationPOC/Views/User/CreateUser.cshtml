@@ -1,57 +1,71 @@
-﻿@model ISummationPOC.Entity.User
+﻿@model ISummationPOC.Request.CreateUserRequest
 
 <h2>Create User</h2>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<!-- Form begins -->
 <form asp-controller="User" asp-action="CreateUser" method="post" enctype="multipart/form-data">
+
+    <!-- Validation Summary to show all errors at once -->
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <!-- First Name -->
     <div class="form-group">
-        <label asp-for="FirstName" class="control-label"></label>
-        <input asp-for="FirstName" class="form-control" />
-        <span asp-validation-for="FirstName" class="text-danger"></span>
+        <label asp-for="User.FirstName" class="control-label"></label>
+        <input asp-for="User.FirstName" class="form-control" />
+        <span asp-validation-for="User.FirstName" class="text-danger"></span>
     </div>
+
+    <!-- Last Name -->
     <div class="form-group">
-        <label asp-for="LastName" class="control-label"></label>
-        <input asp-for="LastName" class="form-control" />
-        <span asp-validation-for="LastName" class="text-danger"></span>
+        <label asp-for="User.LastName" class="control-label"></label>
+        <input asp-for="User.LastName" class="form-control" />
+        <span asp-validation-for="User.LastName" class="text-danger"></span>
     </div>
-  @*   <div class="form-group">
-        <label asp-for="UserType" class="control-label">User Type</label>
-        <select asp-for="UserType" class="form-control" asp-items="ViewBag.UserTypes">
+
+    <!-- User Type -->
+    <div class="form-group">
+        <label asp-for="User.UserTypeId" class="control-label">User Type</label>
+        <select asp-for="User.UserTypeId" class="form-control" asp-items="ViewBag.UserTypes">
             <option value="">-- Select User Type --</option>
         </select>
-        <span asp-validation-for="UserType" class="text-danger"></span>
-    </div> *@
-
-    <div class="form-group">
-        <label asp-for="UserTypeId" class="control-label">User Type</label>
-        <select asp-for="UserTypeId" class="form-control" asp-items="ViewBag.UserTypes">
-            <option value="">-- Select User Type --</option>
-        </select>
-        <span asp-validation-for="UserTypeId" class="text-danger"></span>
+        <span asp-validation-for="User.UserTypeId" class="text-danger"></span>
     </div>
 
-
+    <!-- Email -->
     <div class="form-group">
-        <label asp-for="Email" class="control-label"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Mobile" class="control-label"></label>
-        <input asp-for="Mobile" class="form-control" />
-        <span asp-validation-for="Mobile" class="text-danger"></span>
+        <label asp-for="User.Email" class="control-label"></label>
+        <input asp-for="User.Email" class="form-control" />
+        <span asp-validation-for="User.Email" class="text-danger"></span>
     </div>
 
-    <!-- Profile Image Field -->
+    <!-- Mobile -->
+    <div class="form-group">
+        <label asp-for="User.Mobile" class="control-label"></label>
+        <input asp-for="User.Mobile" class="form-control" />
+        <span asp-validation-for="User.Mobile" class="text-danger"></span>
+    </div>
+
+    <!-- Profile Image -->
     <div class="form-group">
         <label class="control-label">Profile Image</label>
-        <!-- Use 'name="image"' to match the controller parameter -->
         <input name="image" type="file" class="form-control" />
-        <span asp-validation-for="ProfileImage" class="text-danger"></span>
+        <span asp-validation-for="User.ProfileImage" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-action="GetUsers" class="btn btn-secondary">Back to List</a>
+    <!-- Submit and Cancel Buttons -->
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="GetUsers" class="btn btn-secondary">Cancel</a>
+    </div>
 </form>
 
+<!-- Include Validation Scripts -->
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }

@@ -33,8 +33,8 @@ namespace ISummationPOC.Handler
         {
             try
             {
-                await _usersService.AddAsync(request.user);
-                return request.user;
+                await _usersService.AddAsync(request.User);
+                return request.User;
             }
             catch
             {
@@ -46,19 +46,19 @@ namespace ISummationPOC.Handler
         {
             try
             {
-                var existinguser = await _usersService.GetUserByIdAsync(request.user.Id);
+                var existinguser = await _usersService.GetUserByIdAsync(request.User.Id);
                 if (existinguser == null)
                 {
                     throw new Exception("user not found");
                 }
 
 
-                existinguser.Id = request.user.Id;
-                existinguser.UserTypeId = request.user.UserTypeId;
-                existinguser.FirstName = request.user.FirstName;
-                existinguser.LastName = request.user.LastName;
-                existinguser.Email = request.user.Email;
-                existinguser.Mobile = request.user.Mobile;
+                existinguser.Id = request.User.Id;
+                existinguser.UserTypeId = request.User.UserTypeId;
+                existinguser.FirstName = request.User.FirstName;
+                existinguser.LastName = request.User.LastName;
+                existinguser.Email = request.User.Email;
+                existinguser.Mobile = request.User.Mobile;
                 
 
                 await _usersService.UpdateAsync(existinguser);

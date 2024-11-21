@@ -1,51 +1,54 @@
-﻿@model ISummationPOC.Entity.User
+﻿@model ISummationPOC.Request.UpdateUserRequest
 
 <h2>Update User</h2>
 <form asp-controller="User" asp-action="UpdateUser" method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="Id" /> 
+    <input type="hidden" asp-for="User.Id" />
 
     <div class="form-group">
-        <label asp-for="FirstName" class="control-label"></label>
-        <input asp-for="FirstName" class="form-control" />
-        <span asp-validation-for="FirstName" class="text-danger"></span>
+        <label asp-for="User.FirstName" class="control-label"></label>
+        <input asp-for="User.FirstName" class="form-control" />
+        <span asp-validation-for="User.FirstName" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="LastName" class="control-label"></label>
-        <input asp-for="LastName" class="form-control" />
-        <span asp-validation-for="LastName" class="text-danger"></span>
+        <label asp-for="User.LastName" class="control-label"></label>
+        <input asp-for="User.LastName" class="form-control" />
+        <span asp-validation-for="User.LastName" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="UserTypeId" class="control-label">User Type</label>
-        <select asp-for="UserTypeId" class="form-control" asp-items="ViewBag.UserTypes">
+        <label asp-for="User.UserTypeId" class="control-label">User Type</label>
+        <select asp-for="User.UserTypeId" class="form-control" asp-items="ViewBag.UserTypes">
             <option value="">-- Select User Type --</option>
         </select>
-        <span asp-validation-for="UserTypeId" class="text-danger"></span>
+        <span asp-validation-for="User.UserTypeId" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Email" class="control-label"></label>
-        <input asp-for="Email" class="form-control" readonly /> 
-        <span asp-validation-for="Email" class="text-danger"></span>
+        <label asp-for="User.Email" class="control-label"></label>
+        <input asp-for="User.Email" class="form-control"  />
+        <span asp-validation-for="User.Email" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Mobile" class="control-label"></label>
-        <input asp-for="Mobile" class="form-control" />
-        <span asp-validation-for="Mobile" class="text-danger"></span>
+        <label asp-for="User.Mobile" class="control-label"></label>
+        <input asp-for="User.Mobile" class="form-control" />
+        <span asp-validation-for="User.Mobile" class="text-danger"></span>
     </div>
 
     <!-- Profile Image Field -->
     <div class="form-group">
         <label class="control-label">Profile Image</label>
         <input name="image" type="file" class="form-control" />
-        <span asp-validation-for="ProfileImage" class="text-danger"></span>
+        <span asp-validation-for="User.ProfileImage" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label>Current Profile Image</label>
-        <img src="@(Model.ProfileImage != null ? Url.Content($"~/images/{Model.ProfileImage}") : "~/images/default.png")"
+        <img src="@(Model.User.ProfileImage != null
+        ? $"http://127.0.0.1:10000/devstoreaccount1/userprofile/{Model.User.ProfileImage}"
+        : Url.Content("~/images/default.png"))"
              alt="Profile Image" class="img-thumbnail" style="max-height: 150px;" />
     </div>
 
+
     <button type="submit" class="btn btn-primary">Update</button>
-    <a asp-action="GetUsers" class="btn btn-secondary">Back to List</a>
+    <a asp-action="GetUsers" class="btn btn-secondary">Cancel</a>
 </form>
 
 @section Scripts {
