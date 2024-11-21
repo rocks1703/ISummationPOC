@@ -69,7 +69,8 @@ app.UseEndpoints(endpoints =>
 
         name: "default",
 
-        pattern: "{controller=User}/{action=GetUsers}/{id?}");
+       // pattern: "{controller=User}/{action=GetUsers}/{id?}");
+        pattern: "{controller=Home}/{action=Index}/{id?}");
 
 });
 

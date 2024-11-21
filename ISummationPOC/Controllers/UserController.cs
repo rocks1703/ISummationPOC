@@ -124,12 +124,13 @@ namespace ISummationPOC.Controllers
             {
                 await UserService.UpdateUser(request.User, image);
                 return RedirectToAction("GetUsers");
-            }
+            } 
 
 
             return View(request);
         }
 
+        //Delete
 
         [HttpPost("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
