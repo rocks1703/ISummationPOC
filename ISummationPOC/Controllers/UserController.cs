@@ -140,7 +140,7 @@ namespace ISummationPOC.Controllers
             var user = await UserService.DeleteUserAsync(id);
             if (user > 0) 
             {
-                TempData["SuccessDeleteMessage"] = "User deleted successfully.";
+                TempData["SuccessDeleteMessage"] = "User Deleted Successfully.";
             }
             if (user == null) return NotFound();
             return RedirectToAction("GetUsers", User);
