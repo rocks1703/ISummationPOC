@@ -27,7 +27,7 @@ namespace ISummationPOC.Entity
         public string Mobile { get; set; }
 
         [Column("profileimage")]
-        public string ? ProfileImage { get; set; }
+        public string ? ProfileImage { get; set; } 
  
     }
 }

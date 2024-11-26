@@ -35,18 +35,23 @@ namespace ISummationPOC.Service
         {
             if (ProfileImage != null)
             {
-               
+                
                 string imageName = ProfileImage.FileName;
 
-
+               
                 using (var stream = ProfileImage.OpenReadStream())
                 {
                     await _fileUploadService.UploadFileAsync(stream, imageName);
                 }
 
-
+                
                 user.ProfileImage = imageName;
             }
+            else if (string.IsNullOrEmpty(user.ProfileImage))
+            {
+                user.ProfileImage = "noimage.jpg";
+            }
+
             _context.users.Update(user);
             await _context.SaveChangesAsync();
             return user;
@@ -75,6 +80,10 @@ namespace ISummationPOC.Service
 
                 user.ProfileImage = imageName;
             }
+            else if (string.IsNullOrEmpty(user.ProfileImage))
+            {
+                user.ProfileImage = "noimage.jpg";
+            }
             _context.users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -97,7 +106,8 @@ namespace ISummationPOC.Service
 
 
                               Mobile = c.Mobile,
-                              ProfileImage = "http://127.0.0.1:10000/devstoreaccount1/userprofile/" + c.ProfileImage
+                              ProfileImage = !string.IsNullOrEmpty(c.ProfileImage)? "http://127.0.0.1:10000/devstoreaccount1/userprofile/" + c.ProfileImage
+                                            : "http://127.0.0.1:10000/devstoreaccount1/userprofile/noimage.jpg"
                           }
     );
             return await usrlst.ToListAsync();
@@ -105,7 +115,7 @@ namespace ISummationPOC.Service
 
 
 
-        //DeleteUser
+        //DeleteUser 
         public async Task<int> DeleteUserAsync(int id)
         {
             var user = await _context.users.FirstOrDefaultAsync(u => u.Id == id);
