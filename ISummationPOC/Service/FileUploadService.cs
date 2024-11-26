@@ -31,5 +31,10 @@ namespace ISummationPOC.Service
 
             return blobClient.Uri.ToString();
         }
+
+        public Task<string> UploadFileAsync(IFormFile image)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

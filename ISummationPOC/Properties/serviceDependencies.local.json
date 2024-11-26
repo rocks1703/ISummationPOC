@@ -8,6 +8,12 @@
       "type": "storage.emulator",
       "connectionId": "localstorage",
       "dynamicId": null
+    },
+    "storage2": {
+      "secretStore": "LocalSecretsFile",
+      "type": "storage.emulator",
+      "connectionId": "AzureBlobStorage:ConnectionString",
+      "dynamicId": null
     }
   }
 }

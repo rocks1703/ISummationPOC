@@ -11,7 +11,7 @@ namespace ISummationPOC.Handler
                                    IRequestHandler<DeleteUserRequest, int>,
                                     IRequestHandler<UpdateUserRequest, User>,
                                     IRequestHandler<GetUserByIdRequest, User>
-                                    
+                        
     {
         private readonly IUserService _usersService;
        // private readonly IUserService _userService;

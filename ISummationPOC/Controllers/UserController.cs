@@ -1,16 +1,10 @@
 ﻿using ISummationPOC.DBContext;
-using ISummationPOC.Entity;
-using ISummationPOC.Handler;
-using ISummationPOC.Models;
 using ISummationPOC.Request;
 using ISummationPOC.Service;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ISummationPOC.Controllers
 {
@@ -47,7 +41,7 @@ namespace ISummationPOC.Controllers
 
         //CreateUser
         [HttpPost]
-        public async Task<IActionResult> CreateUser(CreateUserRequest request,  IFormFile image)
+        public async Task<IActionResult> CreateUser(CreateUserRequest request,  IFormFile? image)
         {
             var userTypes = _context.userTypes.Select(ut => new { ut.Id, ut.UserType }).ToList();
             ViewBag.UserTypes = new SelectList(userTypes, "Id", "UserType");
@@ -105,7 +99,7 @@ namespace ISummationPOC.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> UpdateUser(UpdateUserRequest request, IFormFile image)
+        public async Task<IActionResult> UpdateUser(UpdateUserRequest request, IFormFile? image)
         {
             var userTypes = _context.userTypes.Select(ut => new { ut.Id, ut.UserType }).ToList();
             ViewBag.UserTypes = new SelectList(userTypes, "Id", "UserType");
@@ -119,7 +113,9 @@ namespace ISummationPOC.Controllers
                 {
                     ModelState.AddModelError("ProfileImage", "Only image files (JPEG, PNG, JPG, GIF, BMP, WebP) are allowed.");
                 }
+               
             }
+
             if (ModelState.IsValid)
             {
                 await UserService.UpdateUser(request.User, image);
