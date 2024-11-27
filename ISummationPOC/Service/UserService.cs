@@ -28,7 +28,7 @@ namespace ISummationPOC.Service
             _blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
             _fileUploadService = fileUploadService;
             _mediator = mediator;
-        }
+        }  
         //UpdateUser
 
         public async Task<User> UpdateUser(User user, IFormFile ProfileImage)
@@ -56,10 +56,7 @@ namespace ISummationPOC.Service
             await _context.SaveChangesAsync();
             return user;
         }
-
-
-
-
+        //CreateUser
         public async Task<User> CreateUserAsync(User user, IFormFile ProfileImage)
         {
 
@@ -112,8 +109,6 @@ namespace ISummationPOC.Service
     );
             return await usrlst.ToListAsync();
         }
-
-
 
         //DeleteUser 
         public async Task<int> DeleteUserAsync(int id)
