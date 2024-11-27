@@ -51,7 +51,7 @@ namespace ISummationPOC.Handler
                 {
                     throw new Exception("user not found");
                 }
-
+                 
 
                 existinguser.Id = request.User.Id;
                 existinguser.UserTypeId = request.User.UserTypeId;

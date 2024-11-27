@@ -42,6 +42,7 @@ builder.Services.AddAzureClients(clientBuilder =>
     clientBuilder.AddBlobServiceClient(builder.Configuration["localstorage:blob"]!, preferMsi: true);
     clientBuilder.AddQueueServiceClient(builder.Configuration["localstorage:queue"]!, preferMsi: true);
 });
+builder.Services.AddApplicationInsightsTelemetry();
 
 
 

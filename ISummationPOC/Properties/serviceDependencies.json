@@ -12,6 +12,10 @@
       "type": "storage",
       "connectionId": "AzureBlobStorage:ConnectionString",
       "dynamicId": null
+    },
+    "appInsights1": {
+      "type": "appInsights",
+      "dynamicId": null
     }
   }
 }

@@ -35,16 +35,46 @@
     <!-- Profile Image Field -->
     <div class="form-group">
         <label class="control-label">Profile Image</label>
-        <input name="image" type="file" class="form-control" />
-        <span asp-validation-for="User.ProfileImage" class="text-danger"></span>
+
+        <!-- Container for current profile image -->
+        <div id="current-image-container">
+            <img src="http://127.0.0.1:10000/devstoreaccount1/userprofile/@Model.User.ProfileImage"
+                 alt="Profile Image"
+                 style="width: 150px; height: 150px; object-fit: cover; border: 1px solid #ccc;" />
+            <button type="button"
+                    class="btn btn-danger btn-sm mt-2"
+                    onclick="removeCurrentImage()">
+                Remove Image
+            </button>
+        </div>
+
+        <!-- File upload input (hidden by default) -->
+        <div id="upload-new-image-container" style="display: none;">
+            <input name="image" type="file" class="form-control" />
+            <span asp-validation-for="User.ProfileImage" class="text-danger"></span>
+        </div>
+
+        <!-- Hidden input field to hold the current image name -->
+        <input type="hidden" id="currentImage" name="currentImage" value="@Model.User.ProfileImage" />
     </div>
-    <div class="form-group">
-        <label>Current Profile Image</label>
-        <img src="@(Model.User.ProfileImage != null
-        ? $"http://127.0.0.1:10000/devstoreaccount1/userprofile/{Model.User.ProfileImage}"
-        : Url.Content("~/images/default.png"))"
-             alt="Profile Image" class="img-thumbnail" style="max-height: 150px;" />
-    </div>
+
+    <script>
+        function removeCurrentImage() {
+            // Hide current image and show the file input
+            document.getElementById('current-image-container').style.display = 'none';
+            document.getElementById('upload-new-image-container').style.display = 'block';
+
+            // Set the value of the hidden input field to the current image
+            var currentImage = '@Model.User.ProfileImage'; // Fetch the current image name from the model
+            document.getElementById('currentImage').value = currentImage;
+
+            // Set the value of the file input to null (so no file is selected)
+            var fileInput = document.querySelector('input[name="image"]');
+            fileInput.value = ''; // Clear any previous file selection
+        }
+    </script>
+
+
 
 
     <button type="submit" class="btn btn-primary">Update</button>

@@ -103,14 +103,13 @@ namespace ISummationPOC.Controllers
         {
             var userTypes = _context.userTypes.Select(ut => new { ut.Id, ut.UserType }).ToList();
             ViewBag.UserTypes = new SelectList(userTypes, "Id", "UserType");
-
             if (image != null)
-            {              
+            {
                 var allowedExtensions = new[] { ".jpeg", ".png", ".jpg", ".gif", ".bmp", ".webp" };
                 var fileExtension = Path.GetExtension(image.FileName).ToLowerInvariant();
 
                 if (!allowedExtensions.Contains(fileExtension))
-                {
+                { 
                     ModelState.AddModelError("ProfileImage", "Only image files (JPEG, PNG, JPG, GIF, BMP, WebP) are allowed.");
                 }
                

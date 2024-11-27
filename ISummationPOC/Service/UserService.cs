@@ -1,4 +1,5 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure.Core;
+using Azure.Storage.Blobs;
 using ISummationPOC.DBContext;
 using ISummationPOC.Entity;
 using ISummationPOC.Models;
@@ -31,11 +32,12 @@ namespace ISummationPOC.Service
         }  
         //UpdateUser
 
-        public async Task<User> UpdateUser(User user, IFormFile ProfileImage)
+        public async Task<User> UpdateUser(User user,IFormFile ProfileImage)
         {
-            if (ProfileImage != null)
+            string profileImage = user.ProfileImage;
+
+            if (ProfileImage != null) 
             {
-                
                 string imageName = ProfileImage.FileName;
 
                
@@ -44,16 +46,21 @@ namespace ISummationPOC.Service
                     await _fileUploadService.UploadFileAsync(stream, imageName);
                 }
 
-                
+               
                 user.ProfileImage = imageName;
             }
-            else if (string.IsNullOrEmpty(user.ProfileImage))
+            else
             {
-                user.ProfileImage = "noimage.jpg";
-            }
-
+               
+                if (string.IsNullOrEmpty(user.ProfileImage))
+                {
+                    user.ProfileImage = "noimage.jpg"; 
+                }
+               
+            }           
             _context.users.Update(user);
             await _context.SaveChangesAsync();
+
             return user;
         }
         //CreateUser
