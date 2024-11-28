@@ -19,7 +19,7 @@ namespace ISummationPOC.Service
         {
             var blobClient = _blobContainerClient.GetBlobClient(fileName);
             var blobHttpHeaders = new Azure.Storage.Blobs.Models.BlobHttpHeaders
-            {
+            { 
                 ContentType = "image/png"
             };
 
