@@ -9,8 +9,9 @@
     <!-- Username (Readonly) -->
     <div class="form-group">
         <label asp-for="User.UserName" class="control-label">Username</label>
-        <input asp-for="User.UserName" class="form-control input-field" readonly />
+        <input asp-for="User.UserName" class="form-control input-field" readonly oncopy="return false" onpaste="return false" onselectstart="return false" />
     </div>
+
 
     <!-- First Name -->
     <div class="form-group">
