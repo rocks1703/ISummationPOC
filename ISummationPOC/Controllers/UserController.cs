@@ -97,7 +97,7 @@ namespace ISummationPOC.Controllers
             return View("UpdateUser", userData);
         }
 
-
+        //UpdateUser
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UpdateUserRequest request, IFormFile? image)
         {
