@@ -54,6 +54,8 @@ namespace ISummationPOC.Handler
                  
 
                 existinguser.Id = request.User.Id;
+                existinguser.UserName = request.User.UserName;
+                existinguser.UserDateOfBirth = request.User.UserDateOfBirth;
                 existinguser.UserTypeId = request.User.UserTypeId;
                 existinguser.FirstName = request.User.FirstName;
                 existinguser.LastName = request.User.LastName;
