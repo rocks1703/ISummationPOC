@@ -1,98 +1,217 @@
 ﻿@model ISummationPOC.Request.UpdateUserRequest
 
-<h2>Update User</h2>
-<form asp-controller="User" asp-action="UpdateUser" method="post" enctype="multipart/form-data">
+<h2 class="page-title">Update User</h2>
+
+<!-- Form to Update User -->
+<form asp-controller="User" asp-action="UpdateUser" method="post" enctype="multipart/form-data" class="update-form">
     <input type="hidden" asp-for="User.Id" />
 
+    <!-- Username (Readonly) -->
     <div class="form-group">
-        <label asp-for="User.UserName" class="control-label"></label>
-        <input asp-for="User.UserName" class="form-control" readonly />       
+        <label asp-for="User.UserName" class="control-label">Username</label>
+        <input asp-for="User.UserName" class="form-control input-field" readonly />
     </div>
 
-
+    <!-- First Name -->
     <div class="form-group">
-        <label asp-for="User.FirstName" class="control-label"></label>
-        <input asp-for="User.FirstName" class="form-control" />
+        <label asp-for="User.FirstName" class="control-label">First Name</label>
+        <input asp-for="User.FirstName" class="form-control input-field" />
         <span asp-validation-for="User.FirstName" class="text-danger"></span>
     </div>
+
+    <!-- Last Name -->
     <div class="form-group">
-        <label asp-for="User.LastName" class="control-label"></label>
-        <input asp-for="User.LastName" class="form-control" />
+        <label asp-for="User.LastName" class="control-label">Last Name</label>
+        <input asp-for="User.LastName" class="form-control input-field" />
         <span asp-validation-for="User.LastName" class="text-danger"></span>
     </div>
+
+    <!-- User Type -->
     <div class="form-group">
         <label asp-for="User.UserTypeId" class="control-label">User Type</label>
-        <select asp-for="User.UserTypeId" class="form-control" asp-items="ViewBag.UserTypes">
+        <select asp-for="User.UserTypeId" class="form-control input-field" asp-items="ViewBag.UserTypes">
             <option value="">-- Select User Type --</option>
         </select>
         <span asp-validation-for="User.UserTypeId" class="text-danger"></span>
     </div>
+
+    <!-- Email -->
     <div class="form-group">
-        <label asp-for="User.Email" class="control-label"></label>
-        <input asp-for="User.Email" class="form-control"  />
+        <label asp-for="User.Email" class="control-label">Email</label>
+        <input asp-for="User.Email" class="form-control input-field" />
         <span asp-validation-for="User.Email" class="text-danger"></span>
     </div>
+
+    <!-- Mobile -->
     <div class="form-group">
-        <label asp-for="User.Mobile" class="control-label"></label>
-        <input asp-for="User.Mobile" class="form-control" />
+        <label asp-for="User.Mobile" class="control-label">Mobile</label>
+        <input asp-for="User.Mobile" class="form-control input-field" />
         <span asp-validation-for="User.Mobile" class="text-danger"></span>
     </div>
+
+    <!-- Date of Birth -->
     <div class="form-group">
-        <label asp-for="User.UserDateOfBirth" class="control-label"></label>
-        <input asp-for="User.UserDateOfBirth" class="form-control" type="date" />
+        <label asp-for="User.UserDateOfBirth" class="control-label">Date of Birth</label>
+        <input asp-for="User.UserDateOfBirth" class="form-control input-field" type="date" />
         <span asp-validation-for="User.UserDateOfBirth" class="text-danger"></span>
     </div>
 
-
-    <!-- Profile Image Field -->
+    <!-- Profile Image -->
     <div class="form-group">
         <label class="control-label">Profile Image</label>
 
-        <!-- Container for current profile image -->
+        <!-- Current Profile Image -->
         <div id="current-image-container">
             <img src="http://127.0.0.1:10000/devstoreaccount1/userprofile/@Model.User.ProfileImage"
                  alt="Profile Image"
                  style="width: 150px; height: 150px; object-fit: cover; border: 1px solid #ccc;" />
-            <button type="button"
-                    class="btn btn-danger btn-sm mt-2"
-                    onclick="removeCurrentImage()">
-                Remove Image
-            </button>
+            <button type="button" class="btn btn-danger btn-sm mt-2" onclick="removeCurrentImage()">Remove Image</button>
         </div>
 
-        <!-- File upload input (hidden by default) -->
+        <!-- New Profile Image Upload -->
         <div id="upload-new-image-container" style="display: none;">
             <input name="image" type="file" class="form-control" />
             <span asp-validation-for="User.ProfileImage" class="text-danger"></span>
         </div>
 
-        <!-- Hidden input field to hold the current image name -->
+        <!-- Hidden field to hold current image name -->
         <input type="hidden" id="currentImage" name="currentImage" value="@Model.User.ProfileImage" />
     </div>
 
-    <script>
-        function removeCurrentImage() {
-            // Hide current image and show the file input
-            document.getElementById('current-image-container').style.display = 'none';
-            document.getElementById('upload-new-image-container').style.display = 'block';
-
-            // Set the value of the hidden input field to the current image
-            var currentImage = '@Model.User.ProfileImage'; // Fetch the current image name from the model
-            document.getElementById('currentImage').value = currentImage;
-
-            // Set the value of the file input to null (so no file is selected)
-            var fileInput = document.querySelector('input[name="image"]');
-            fileInput.value = ''; // Clear any previous file selection
-        }
-    </script>
-
-
-
-
-    <button type="submit" class="btn btn-primary">Update</button>
-    <a asp-action="GetUsers" class="btn btn-secondary">Cancel</a>
+    <!-- Submit and Cancel Buttons -->
+    <div class="form-group form-buttons">
+        <button type="submit" class="btn btn-primary btn-submit">Update</button>
+        <a asp-action="GetUsers" class="btn btn-secondary btn-cancel">Cancel</a>
+    </div>
 </form>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }
+
+<!-- Styling -->
+<style>
+    .page-title {
+        font-size: 28px;
+        color: #4CAF50;
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .update-form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .input-field {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+    }
+
+        .input-field:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+    .form-group label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-buttons {
+        text-align: center;
+    }
+
+    .btn-submit {
+        background: linear-gradient(45deg, #4CAF50, #81C784);
+        color: white;
+        border-radius: 50px;
+        padding: 10px 30px;
+        font-size: 18px;
+        text-transform: uppercase;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-submit:hover {
+            background: linear-gradient(45deg, #81C784, #4CAF50);
+            transform: translateY(-3px);
+        }
+
+        .btn-submit:active {
+            transform: translateY(2px);
+        }
+
+    .btn-cancel {
+        background-color: #ddd;
+        padding: 12px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #333;
+        text-decoration: none;
+        display: inline-block;
+        margin-left: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-cancel:hover {
+            background-color: #bbb;
+        }
+
+    .form-control-file {
+        border-radius: 5px;
+        padding: 8px;
+    }
+
+    .alert {
+        padding: 15px;
+        background-color: #dff0d8;
+        border: 1px solid #d0e9c6;
+        color: #3c763d;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    #current-image-container {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+        #current-image-container img {
+            border-radius: 10px;
+        }
+
+</style>
+
+<!-- Font Awesome for Icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+<!-- Script to manage current image removal -->
+<script>
+    function removeCurrentImage() {
+        // Hide current image and show the file input
+        document.getElementById('current-image-container').style.display = 'none';
+        document.getElementById('upload-new-image-container').style.display = 'block';
+
+        // Set the value of the hidden input field to the current image
+        var currentImage = '@Model.User.ProfileImage'; // Fetch the current image name from the model
+        document.getElementById('currentImage').value = currentImage;
+
+        // Set the value of the file input to null (so no file is selected)
+        var fileInput = document.querySelector('input[name="image"]');
+        fileInput.value = ''; // Clear any previous file selection
+    }
+</script>
