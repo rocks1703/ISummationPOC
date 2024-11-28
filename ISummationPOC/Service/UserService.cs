@@ -72,10 +72,7 @@ namespace ISummationPOC.Service
 
             if (ProfileImage != null)
             {
-                //var validImageTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp" };
-
-
-                //string imageName = ProfileImage.FileName;
+                
                 string imageName = ProfileImage.FileName + " " + user.FirstName + " " + user.LastName;
 
                 using (var stream = ProfileImage.OpenReadStream())
@@ -134,8 +131,7 @@ namespace ISummationPOC.Service
 
         //GetUserById       
         public async Task<User> GetUserByIdAsync(int id)
-        {
-            //return await _context.users.Include(u => u.UserType).FirstOrDefaultAsync(u => u.Id == id);
+        {          
             return await _context.users.FirstOrDefaultAsync();
         }
 
