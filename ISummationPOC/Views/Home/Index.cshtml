@@ -41,9 +41,16 @@
             color: white;
         }
 
+        /* Styling for the buttons */
         .btn-lg {
             margin: 10px;
+            padding: 15px 30px;
+            font-size: 18px;
         }
+
+        /* Media query for smaller screens */
+       
+
     </style>
 </head>
 <body>
@@ -53,23 +60,24 @@
         <div class="overlay"></div>
         <div class="content">
             <h1 class="display-4 mb-4">
-                <a href="https://www.isummation.com/" class="text-white" target="_blank">
+                <a href="https://www.isummation.com/" class="text-white" target="_blank" rel="noopener noreferrer">
                     Welcome to ISummation User Management System
                 </a>
             </h1>
 
-
-            <div class="d-flex justify-content-center mb-4">
+            <div class="d-flex justify-content-center mb-4 flex-wrap">
                 <a asp-controller="User" asp-action="CreateUser" class="btn btn-success btn-lg mx-2">
                     <i class="fas fa-user-plus"></i> Create New User
                 </a>
                 <a asp-controller="User" asp-action="GetUsers" class="btn btn-info btn-lg mx-2">
                     <i class="fas fa-users"></i> User List
                 </a>
-            </div>            
+            </div>
         </div>
     </div>
 
+    <!-- FontAwesome script -->
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
 </body>
 </html>
