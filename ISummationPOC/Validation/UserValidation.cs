@@ -61,13 +61,13 @@ namespace ISummationPOC.Validation
     public class UpdateUserValidation : AbstractValidator<UpdateUserRequest>
     {
         private readonly ISummationDbContext _context;
-        public UpdateUserValidation(ISummationDbContext dbContext)
+        public UpdateUserValidation(ISummationDbContext dbContext)  
         {
             _context = dbContext;
 
             _context = dbContext;
             RuleFor(request => request.User).NotNull().WithMessage("User object cannot be null.");
-            //RuleFor(request => request.User.UserName).NotEmpty().NotNull().WithMessage("UserName is required.").Must(BeUniqueUserName).WithMessage("UserName Not avaible.");
+
             RuleFor(request => request.User.FirstName).NotEmpty().NotNull().WithMessage("First Name is required.");
 
             RuleFor(request => request.User.LastName).NotEmpty().NotNull().WithMessage("Last Name is required.");
@@ -89,8 +89,7 @@ namespace ISummationPOC.Validation
         }
         private bool BeUniqueEmail(string email, int currentUserId)
         {
-            if (string.IsNullOrWhiteSpace(email))
-                return false;          
+            if (string.IsNullOrWhiteSpace(email))return false;
             return !_context.users.Any(c => c.Email == email && c.Id != currentUserId);
         }
         private bool BeuniqueMobile(string mobile, int currentUserId)
