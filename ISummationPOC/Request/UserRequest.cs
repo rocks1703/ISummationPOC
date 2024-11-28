@@ -11,8 +11,7 @@ namespace ISummationPOC.Request
 
     public class UpdateUserRequest : IRequest<User> 
     {
-        public User User { get; set; }
-       // public string FileName { get; set; }
+        public User User { get; set; }       
     }
 
     public class GetUserByIdRequest : IRequest<User>
@@ -22,7 +21,6 @@ namespace ISummationPOC.Request
 
     public class DeleteUserRequest : IRequest<int>
     {
-        public int id { get; set; }
-        //public User user { get; set; }
+        public int id { get; set; }      
     }
 }

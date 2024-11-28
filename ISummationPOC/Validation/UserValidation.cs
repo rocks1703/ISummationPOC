@@ -11,8 +11,7 @@ namespace ISummationPOC.Validation
 
         public CreateUserValidation( ISummationDbContext dbContext)
         {
-            //_context = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-
+            
             _context = dbContext;
             RuleFor(request => request.User).NotNull().WithMessage("User object cannot be null.");
 
