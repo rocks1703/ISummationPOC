@@ -10,6 +10,9 @@ namespace ISummationPOC.Entity
         [Column("id")]
         public int Id { get; set; }
 
+        [Column("username")]
+        public string UserName { get; set; }
+
         [Column("usertypeid")]
         public int UserTypeId { get; set; }       
 
@@ -27,7 +30,10 @@ namespace ISummationPOC.Entity
         public string Mobile { get; set; }
 
         [Column("profileimage")]
-        public string ? ProfileImage { get; set; } 
- 
+        public string ? ProfileImage { get; set; }
+
+        [Column("userdateofbirth")]
+        public DateTime UserDateOfBirth { get; set; }
+
     }
 }

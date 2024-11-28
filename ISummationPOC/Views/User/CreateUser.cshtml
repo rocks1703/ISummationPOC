@@ -50,6 +50,15 @@
         <input asp-for="User.Mobile" class="form-control" />
         <span asp-validation-for="User.Mobile" class="text-danger"></span>
     </div>
+    <div class="form-group">
+        <label asp-for="User.UserDateOfBirth" class="control-label"></label>
+        <input asp-for="User.UserDateOfBirth" class="form-control" type="date" />
+        <span asp-validation-for="User.UserDateOfBirth" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.UserName" class="control-label"></label>
+        <input asp-for="User.UserName" class="form-control" />
+    </div>
 
     <!-- Profile Image -->
     <div class="form-group">

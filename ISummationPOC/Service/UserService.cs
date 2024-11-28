@@ -38,9 +38,11 @@ namespace ISummationPOC.Service
 
             if (ProfileImage != null) 
             {
-                string imageName = ProfileImage.FileName;
+                //string imageName = ProfileImage.FileName;
+                string imageName = ProfileImage.FileName + " "+ user.FirstName + " " + user.LastName;
+               // string imageName = ;
 
-               
+
                 using (var stream = ProfileImage.OpenReadStream())
                 {
                     await _fileUploadService.UploadFileAsync(stream, imageName);
@@ -73,8 +75,8 @@ namespace ISummationPOC.Service
                 //var validImageTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp" };
 
 
-                string imageName = ProfileImage.FileName;
-
+                //string imageName = ProfileImage.FileName;
+                string imageName = ProfileImage.FileName + " " + user.FirstName + " " + user.LastName;
 
                 using (var stream = ProfileImage.OpenReadStream())
                 {
@@ -99,21 +101,21 @@ namespace ISummationPOC.Service
         {
 
             var usrlst = (from c in _context.users
+                          orderby c.Id descending
                           select new UserViewModel
                           {
                               Id = c.Id,
+                              UserName = c.UserName.ToLower(),
                               FirstName = c.FirstName,
                               LastName = c.LastName,
-                              Email = c.Email,
+                              Email = c.Email.ToLower(),
                               //UserTypeId = c.UserTypeId,
                               UserType = _context.userTypes.Where(f => f.Id == c.UserTypeId).Select(f => f.UserType).FirstOrDefault(),
-
-
                               Mobile = c.Mobile,
-                              ProfileImage = !string.IsNullOrEmpty(c.ProfileImage)? "http://127.0.0.1:10000/devstoreaccount1/userprofile/" + c.ProfileImage
+                              UserDateOfBirth = c.UserDateOfBirth.ToString("dd/MM/yyyy"),
+                              ProfileImage = !string.IsNullOrEmpty(c.ProfileImage) ? "http://127.0.0.1:10000/devstoreaccount1/userprofile/" + c.ProfileImage
                                             : "http://127.0.0.1:10000/devstoreaccount1/userprofile/noimage.jpg"
-                          }
-    );
+                          });
             return await usrlst.ToListAsync();
         }
 
