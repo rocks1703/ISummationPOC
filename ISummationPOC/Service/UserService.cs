@@ -29,8 +29,8 @@ namespace ISummationPOC.Service
             _blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
             _fileUploadService = fileUploadService;
             _mediator = mediator;
-        }  
-        //UpdateUser
+        }
+        //UpdateUser  
 
         public async Task<User> UpdateUser(User user,IFormFile ProfileImage)
         {
@@ -38,28 +38,17 @@ namespace ISummationPOC.Service
 
             if (ProfileImage != null) 
             {
-                //string imageName = ProfileImage.FileName;
-                string imageName = ProfileImage.FileName + " "+ user.FirstName + " " + user.LastName;
-               // string imageName = ;
+                string folderPath = $"{user.Id}/";
 
+                string imageName = folderPath+ ProfileImage.FileName + " "+ user.FirstName + " " + user.LastName;
+               // string imageName = ;
 
                 using (var stream = ProfileImage.OpenReadStream())
                 {
                     await _fileUploadService.UploadFileAsync(stream, imageName);
                 }
-
-               
                 user.ProfileImage = imageName;
-            }
-            else
-            {
-               
-                if (string.IsNullOrEmpty(user.ProfileImage))
-                {
-                    user.ProfileImage = "noimage.jpg"; 
-                }
-               
-            }           
+            }                  
             _context.users.Update(user);
             await _context.SaveChangesAsync();
 
@@ -69,25 +58,23 @@ namespace ISummationPOC.Service
         public async Task<User> CreateUserAsync(User user, IFormFile ProfileImage)
         {
 
-
             if (ProfileImage != null)
             {
-                
-                string imageName = ProfileImage.FileName + " " + user.FirstName + " " + user.LastName;
+                _context.users.Add(user);
+                await _context.SaveChangesAsync();
+
+                string folderPath = $"{user.Id}/";
+
+                string imageName = folderPath + ProfileImage.FileName + " " + user.FirstName + " " + user.LastName;               
 
                 using (var stream = ProfileImage.OpenReadStream())
                 {
                     await _fileUploadService.UploadFileAsync(stream, imageName);
                 }
 
-
                 user.ProfileImage = imageName;
-            }
-            else if (string.IsNullOrEmpty(user.ProfileImage))
-            {
-                user.ProfileImage = "noimage.jpg";
-            }
-            _context.users.Add(user);
+            }           
+            _context.users.Update(user);
             await _context.SaveChangesAsync();
 
             return user;
@@ -105,12 +92,14 @@ namespace ISummationPOC.Service
                               UserName = c.UserName.ToLower(),
                               FirstName = c.FirstName,
                               LastName = c.LastName,
-                              Email = c.Email.ToLower(),                             
+                              Email = c.Email.ToLower(),      
                               UserType = _context.userTypes.Where(f => f.Id == c.UserTypeId).Select(f => f.UserType).FirstOrDefault(),
                               Mobile = c.Mobile,
                               UserDateOfBirth = c.UserDateOfBirth.ToString("dd/MM/yyyy"),
-                              ProfileImage = !string.IsNullOrEmpty(c.ProfileImage) ? "http://127.0.0.1:10000/devstoreaccount1/userprofile/" + c.ProfileImage
-                                            : "http://127.0.0.1:10000/devstoreaccount1/userprofile/noimage.jpg"
+                              ProfileImage = !string.IsNullOrEmpty(c.ProfileImage)
+                                                ? $"http://127.0.0.1:10000/devstoreaccount1/userprofile/{c.ProfileImage}"
+                                                 : null,
+
                           });
             return await usrlst.ToListAsync();
         }

@@ -17,7 +17,7 @@ namespace ISummationPOC.Controllers
         public UserController(IMediator mediator, IUserService _userService, IFileUploadService fileUploadService , ISummationDbContext context)
         {
             _mediator = mediator;
-            UserService = _userService;            
+            UserService = _userService;
             _fileUploadService = fileUploadService;
             _context = context;
         }
@@ -80,7 +80,7 @@ namespace ISummationPOC.Controllers
         //UpdateUser
         [HttpGet]
         public async Task<IActionResult> UpdateUser(int id)
-        {           
+        {
 
             var user = await _context.users.FindAsync(id);
             if (user == null)
