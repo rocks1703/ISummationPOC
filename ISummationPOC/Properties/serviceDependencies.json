@@ -3,19 +3,17 @@
     "secrets1": {
       "type": "secrets"
     },
-    "storage1": {
-      "type": "storage",
-      "connectionId": "localstorage",
-      "dynamicId": null
-    },
-    "storage2": {
-      "type": "storage",
-      "connectionId": "AzureBlobStorage:ConnectionString",
-      "dynamicId": null
-    },
     "appInsights1": {
       "type": "appInsights",
       "dynamicId": null
+    },
+    "storage1": {
+      "type": "storage",
+      "connectionId": "localstorage"
+    },
+    "storage2": {
+      "type": "storage",
+      "connectionId": "AzureBlobStorage:ConnectionString"
     }
   }
 }
