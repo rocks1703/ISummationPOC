@@ -50,18 +50,18 @@ namespace ISummationPOC.Handler
                 if (existinguser == null)
                 {
                     throw new Exception("user not found");
-                }
-                 
-
-                existinguser.Id = request.User.Id;
+                }               
                 existinguser.UserName = request.User.UserName;
                 existinguser.UserDateOfBirth = request.User.UserDateOfBirth;
                 existinguser.UserTypeId = request.User.UserTypeId;
                 existinguser.FirstName = request.User.FirstName;
                 existinguser.LastName = request.User.LastName;
                 existinguser.Email = request.User.Email;
-                existinguser.Mobile = request.User.Mobile;
-                
+                existinguser.Mobile = request.User.Mobile;               
+                if (request.User.ProfileImage != existinguser.ProfileImage)
+                {
+                    existinguser.ProfileImage = request.User.ProfileImage;
+                }
 
                 await _usersService.UpdateAsync(existinguser);
 
@@ -69,15 +69,14 @@ namespace ISummationPOC.Handler
             }
             catch (DbUpdateException dbEx)
             {
-
                 throw new Exception("Database error occurred while updating the User", dbEx);
             }
             catch (Exception ex)
             {
-
                 throw new Exception("An error occurred while updating the user", ex);
             }
         }
+
 
         public async Task<User> Handle(GetUserByIdRequest request, CancellationToken cancellationToken)
         {

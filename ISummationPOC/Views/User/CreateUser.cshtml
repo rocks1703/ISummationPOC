@@ -17,21 +17,21 @@
 
     <!-- First Name -->
     <div class="form-group">
-        <label asp-for="User.FirstName" class="control-label">First Name</label>
-        <input asp-for="User.FirstName" class="form-control input-field" placeholder="Enter first name" />
+        <label asp-for="User.FirstName" class="control-label">Firstname</label>
+        <input asp-for="User.FirstName" class="form-control input-field" placeholder="e.g., John" />
         <span asp-validation-for="User.FirstName" class="text-danger"></span>
     </div>
 
     <!-- Last Name -->
     <div class="form-group">
-        <label asp-for="User.LastName" class="control-label">Last Name</label>
-        <input asp-for="User.LastName" class="form-control input-field" placeholder="Enter last name" />
+        <label asp-for="User.LastName" class="control-label">Lastname</label>
+        <input asp-for="User.LastName" class="form-control input-field" placeholder="e.g., Doe" />
         <span asp-validation-for="User.LastName" class="text-danger"></span>
     </div>
 
     <!-- User Type -->
     <div class="form-group">
-        <label asp-for="User.UserTypeId" class="control-label">User Type</label>
+        <label asp-for="User.UserTypeId" class="control-label">Usertype</label>
         <select asp-for="User.UserTypeId" class="form-control input-field" asp-items="ViewBag.UserTypes">
             <option value="">-- Select User Type --</option>
         </select>
@@ -41,14 +41,14 @@
     <!-- Email -->
     <div class="form-group">
         <label asp-for="User.Email" class="control-label">Email</label>
-        <input asp-for="User.Email" class="form-control input-field" placeholder="Enter email" />
+        <input asp-for="User.Email" class="form-control input-field" placeholder="e.g., example@example.com" />
         <span asp-validation-for="User.Email" class="text-danger"></span>
     </div>
 
     <!-- Mobile -->
     <div class="form-group">
         <label asp-for="User.Mobile" class="control-label">Mobile</label>
-        <input asp-for="User.Mobile" class="form-control input-field" placeholder="Enter mobile number" />
+        <input asp-for="User.Mobile" class="form-control input-field" placeholder="e.g., 1234567890" />
         <span asp-validation-for="User.Mobile" class="text-danger"></span>
     </div>
 
@@ -63,11 +63,12 @@
     <div class="form-group">
         <label asp-for="User.UserName" class="control-label">Username</label>
         <input asp-for="User.UserName" class="form-control input-field" placeholder="Enter username" />
+        <span asp-validation-for="User.UserName" class="text-danger"></span>
     </div>
 
     <!-- Profile Image -->
     <div class="form-group">
-        <label class="control-label">Profile Image</label>
+        <label class="control-label">Profile image</label>
         <input name="image" type="file" class="form-control-file" />
         <span asp-validation-for="User.ProfileImage" class="text-danger"></span>
     </div>

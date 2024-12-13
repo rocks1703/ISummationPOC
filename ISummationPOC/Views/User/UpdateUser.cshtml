@@ -15,21 +15,21 @@
 
     <!-- First Name -->
     <div class="form-group">
-        <label asp-for="User.FirstName" class="control-label">First Name</label>
+        <label asp-for="User.FirstName" class="control-label">Firstname</label>
         <input asp-for="User.FirstName" class="form-control input-field" />
         <span asp-validation-for="User.FirstName" class="text-danger"></span>
     </div>
 
     <!-- Last Name -->
     <div class="form-group">
-        <label asp-for="User.LastName" class="control-label">Last Name</label>
+        <label asp-for="User.LastName" class="control-label">Lastname</label>
         <input asp-for="User.LastName" class="form-control input-field" />
         <span asp-validation-for="User.LastName" class="text-danger"></span>
     </div>
 
     <!-- User Type -->
     <div class="form-group">
-        <label asp-for="User.UserTypeId" class="control-label">User Type</label>
+        <label asp-for="User.UserTypeId" class="control-label">Usertype</label>
         <select asp-for="User.UserTypeId" class="form-control input-field" asp-items="ViewBag.UserTypes">
             <option value="">-- Select User Type --</option>
         </select>
@@ -57,27 +57,52 @@
         <span asp-validation-for="User.UserDateOfBirth" class="text-danger"></span>
     </div>
 
-    <!-- Profile Image -->
+    <!-- Username -->
     <div class="form-group">
-        <label class="control-label">Profile Image</label>
+        <label asp-for="User.UserName" class="control-label">Email</label>
+        <input asp-for="User.UserName" class="form-control input-field" />
+        <span asp-validation-for="User.UserName" class="text-danger"></span>
+    </div>
 
-        <!-- Current Profile Image -->
-        <div id="current-image-container">
+    <!-- Profile Image -->
+
+    <div class="form-group">
+        <label class="control-label">Profile image</label>
+       
+        <div id="current-image-container" style="display: @((Model.User.ProfileImage != null && Model.User.ProfileImage != "") ? "block" : "none");">
             <img src="http://127.0.0.1:10000/devstoreaccount1/userprofile/@Model.User.ProfileImage"
                  alt="Profile Image"
                  style="width: 150px; height: 150px; object-fit: cover; border: 1px solid #ccc;" />
             <button type="button" class="btn btn-danger btn-sm mt-2" onclick="removeCurrentImage()">Remove Image</button>
         </div>
 
-        <!-- New Profile Image Upload -->
-        <div id="upload-new-image-container" style="display: none;">
+       
+        <div id="upload-new-image-container" style="display: @((Model.User.ProfileImage != null && Model.User.ProfileImage != "") ? "none" : "block");">
             <input name="image" type="file" class="form-control" />
             <span asp-validation-for="User.ProfileImage" class="text-danger"></span>
         </div>
 
-        <!-- Hidden field to hold current image name -->
-        <input type="hidden" id="currentImage" name="currentImage" value="@Model.User.ProfileImage" />
+       
+        <input type="hidden" id="currentImage" name="User.ProfileImage" value="@Model.User.ProfileImage" />
     </div>
+
+    <script>
+        function removeCurrentImage() {
+          
+            document.getElementById('current-image-container').style.display = 'none';
+            document.getElementById('upload-new-image-container').style.display = 'block';
+
+           
+            document.getElementById('currentImage').value = '';
+
+           
+            var fileInput = document.querySelector('input[name="image"]');
+            fileInput.value = ''; 
+        }
+    </script>
+
+
+
 
     <!-- Submit and Cancel Buttons -->
     <div class="form-group form-buttons">
@@ -200,7 +225,7 @@
 <!-- Font Awesome for Icons -->
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
-<!-- Script to manage current image removal -->
+@* <!-- Script to manage current image removal -->
 <script>
     function removeCurrentImage() {
         // Hide current image and show the file input
@@ -215,4 +240,4 @@
         var fileInput = document.querySelector('input[name="image"]');
         fileInput.value = ''; // Clear any previous file selection
     }
-</script>
+</script> *@

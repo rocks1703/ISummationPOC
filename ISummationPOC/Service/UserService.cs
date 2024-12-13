@@ -7,6 +7,7 @@ using ISummationPOC.Repository;
 using ISummationPOC.Request;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace ISummationPOC.Service
@@ -15,45 +16,50 @@ namespace ISummationPOC.Service
     {
 
         private readonly ISummationDbContext _context;
-
-        private readonly BlobContainerClient _blobContainerClient;
         private readonly IFileUploadService _fileUploadService;
         private readonly IMediator _mediator;
+        private readonly BlobContainerClient _blobContainerClient;
 
-        public UserService(ISummationDbContext context, IConfiguration configuration, IFileUploadService fileUploadService, IMediator mediator) : base(context)
+       
+        public UserService(ISummationDbContext context,IFileUploadService fileUploadService,IMediator mediator,BlobServiceClient blobServiceClient, IOptions<AzureBlobStorageSettings> blobStorageSettings): base(context)
         {
             _context = context;
-            var connectionString = configuration.GetValue<string>("AzureBlobStorage:ConnectionString");
-            var containerName = configuration.GetValue<string>("AzureBlobStorage:ContainerName");
-            var blobServiceClient = new BlobServiceClient(connectionString);
-            _blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
             _fileUploadService = fileUploadService;
             _mediator = mediator;
+            var containerName = blobStorageSettings.Value.ContainerName;                  
+            _blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
         }
         //UpdateUser  
 
-        public async Task<User> UpdateUser(User user,IFormFile ProfileImage)
+        public async Task<User> UpdateUser(User user, IFormFile? ProfileImage)
         {
+           
             string profileImage = user.ProfileImage;
 
-            if (ProfileImage != null) 
+            if (ProfileImage != null)
             {
+                
                 string folderPath = $"{user.Id}/";
-
-                string imageName = folderPath+ ProfileImage.FileName + " "+ user.FirstName + " " + user.LastName;
-               // string imageName = ;
+                string imageName = folderPath + ProfileImage.FileName ;
 
                 using (var stream = ProfileImage.OpenReadStream())
                 {
-                    await _fileUploadService.UploadFileAsync(stream, imageName);
+                    await _fileUploadService.UploadFileAsync(stream, imageName); 
                 }
-                user.ProfileImage = imageName;
-            }                  
+
+                profileImage = imageName; 
+            }
+
+            user.ProfileImage = profileImage;
+
+            
             _context.users.Update(user);
             await _context.SaveChangesAsync();
 
             return user;
         }
+
+
         //CreateUser
         public async Task<User> CreateUserAsync(User user, IFormFile ProfileImage)
         {
@@ -65,7 +71,7 @@ namespace ISummationPOC.Service
 
                 string folderPath = $"{user.Id}/";
 
-                string imageName = folderPath + ProfileImage.FileName + " " + user.FirstName + " " + user.LastName;               
+                string imageName = folderPath + ProfileImage.FileName ;               
 
                 using (var stream = ProfileImage.OpenReadStream())
                 {
@@ -84,8 +90,7 @@ namespace ISummationPOC.Service
         public async Task<IEnumerable<UserViewModel>> GetAllUserAsync()
         {
 
-            var usrlst = (from c in _context.users
-                          orderby c.Id descending
+            var userslist = (from c in _context.users                         
                           select new UserViewModel
                           {
                               Id = c.Id,
@@ -100,8 +105,8 @@ namespace ISummationPOC.Service
                                                 ? $"http://127.0.0.1:10000/devstoreaccount1/userprofile/{c.ProfileImage}"
                                                  : null,
 
-                          });
-            return await usrlst.ToListAsync();
+                          }).OrderByDescending(x=> x.Id);
+            return await userslist.ToListAsync();
         }
 
         //DeleteUser 
@@ -122,6 +127,12 @@ namespace ISummationPOC.Service
         public async Task<User> GetUserByIdAsync(int id)
         {          
             return await _context.users.FirstOrDefaultAsync();
+        }
+
+        public class AzureBlobStorageSettings
+        {
+           
+            public string ContainerName { get; set; }
         }
 
 

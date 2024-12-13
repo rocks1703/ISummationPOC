@@ -11,7 +11,7 @@ namespace ISummationPOC.Models
         public string LastName { get; set; }
         public string Email { get; set; } 
         public string Mobile { get; set; }
-        public string ProfileImage { get; set; } = "noimage.jpg";
+        public string ProfileImage { get; set; }
         public string UserDateOfBirth { get; set; }
     }
 }
